@@ -1,0 +1,5 @@
+colored==1.4.3
+coloredlogs==15.0.1
+cprint==1.2.2
+humanfriendly==10.0
+termcolor==1.1.0
