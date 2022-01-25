@@ -1,6 +1,12 @@
 """Device API protocols."""
 
+import enum
 from abc import ABC, abstractmethod
+
+
+class PowerState(enum.Enum):
+  ON = True
+  OFF = False
 
 
 class DeviceInterface(ABC):

@@ -83,3 +83,52 @@ class LEDTVController(device_api.TVInterface):
 
   def off(self):
     self.on_state = False
+
+
+class LEDTVControllerV2(device_api.TVInterface):
+  def __init__(self, location):
+    self.location = location
+    self._state = device_api.PowerState.OFF
+    self._channel_num = 10
+    self.log = get_logger(self)
+
+  def is_on(self):
+    return self._state == device_api.PowerState.ON
+
+  def get_channel(self):
+    return self._channel_num
+
+  @property
+  def state(self):
+    return self._state
+
+  @state.setter
+  def state(self, val):
+    if self._state.value ^ val:
+      state_str = 'on' if val else 'off'
+      self.log.info(
+          '\tTurn %s TV(%s) with channel=%d',
+          state_str, self.location, self.channel_num)
+      self._state = device_api.PowerState.ON if val else device_api.PowerState.OFF
+
+  @property
+  def channel_num(self):
+    return self._channel_num
+
+  @channel_num.setter
+  def channel_num(self, val):
+    if not self.is_on():
+      self.log.warning('\tPlease turn on first!')
+      return
+
+    if self._channel_num != val:
+      self._channel_num = val
+      self.log.info(
+          '\tChange channel of TV(%s) to be %d',
+          self.location, self._channel_num)
+
+  def on(self):
+    self._state = device_api.PowerState.ON
+
+  def off(self):
+    self._state = device_api.PowerState.OFF
