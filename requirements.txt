@@ -1,5 +1,12 @@
-colored==1.4.3
+attrs==21.4.0
 coloredlogs==15.0.1
-cprint==1.2.2
 humanfriendly==10.0
+iniconfig==1.1.1
+packaging==21.3
+parameterized==0.8.1
+pluggy==1.0.0
+py==1.11.0
+pyparsing==3.0.7
+pytest==6.2.5
 termcolor==1.1.0
+toml==0.10.2
