@@ -73,3 +73,7 @@ class SmartPhone:
       return msg
     else:
       return 'Unknown state'
+
+  def on_hold(self) -> str:
+    # TBD
+    pass
