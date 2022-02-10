@@ -27,6 +27,8 @@ class SmartPhoneTest(unittest.TestCase):
       self.phone_ctx.state = smartphone_states.SmartPhoneInCall(self.phone_ctx)
     elif state == CallState.RING:
       self.phone_ctx.state = smartphone_states.SmartPhoneRing(self.phone_ctx)
+    elif state == CallState.ONHOLD:
+      self.phone_ctx.state = smartphone_states.SmartPhoneOnHold(self.phone_ctx)
     else:
       raise Exception('Unknown state!')
 
@@ -37,6 +39,8 @@ class SmartPhoneTest(unittest.TestCase):
       self.assertTrue(isinstance(self.phone_ctx.state, smartphone_states.SmartPhoneInCall))
     elif expected_state == CallState.RING:
       self.assertTrue(isinstance(self.phone_ctx.state, smartphone_states.SmartPhoneRing))
+    elif expected_state == CallState.ONHOLD:
+      self.assertTrue(isinstance(self.phone_ctx.state, smartphone_states.SmartPhoneOnHold))
     else:
       raise Exception('Unknown state!')
 

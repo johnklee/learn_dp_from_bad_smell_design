@@ -79,6 +79,7 @@ class SmartPhoneRing(SmartPhoneState):
 
   def on_hold(self) -> str:
     msg = f'Put call {self._ctx.incoming_call_number} on hold'
+    self._ctx.state = SmartPhoneOnHold(self._ctx)
     return msg
 
 
@@ -112,12 +113,37 @@ class SmartPhoneInCall(SmartPhoneState):
     return msg
 
   def on_hold(self) -> str:
-    msg = f'Put call {self._ctx.in_call_number} on hold and pickup {self._ctx.incoming_call_number}'
-    self._ctx.in_call_number, self._ctx.incoming_call_number = self._ctx.incoming_call_number, self._ctx.in_call_number
+    if self._ctx.incoming_call_number:
+      msg = f'Put call {self._ctx.in_call_number} on hold and pickup {self._ctx.incoming_call_number}'
+      self._ctx.in_call_number, self._ctx.incoming_call_number = self._ctx.incoming_call_number, self._ctx.in_call_number
+    else:
+      msg = f'Put call {self._ctx.in_call_number} on hold'
+      self._ctx.in_call_number = self._ctx.incoming_call_number
+      self._ctx.state = SmartPhoneOnHold(self._ctx)
+
     return msg
 
 
 class SmartPhoneOnHold(SmartPhoneState):
   def __init__(self, context):
     super().__init__(context)
-    # TBD
+
+  def in_call(self, phone_number: str) -> str:
+    return f'Alerting user of incoming call from {phone_number}'
+
+  def answer_call(self) -> str:
+    self._ctx.in_call_number, self._ctx.incoming_call_number = self._ctx.incoming_call_number, None
+    msg = f'Pickup call from {self._ctx.in_call_numbe}'
+    self._ctx.state = SmartPhoneInCall(self._ctx)
+    return msg
+
+  def reject_call(self) -> str:
+    return 'Can not reject call from ONHOLD'
+
+  def end_call(self) -> str:
+    msg = f'End call from {self._ctx.incoming_call_number}'
+    self._ctx.state = SmartPhoneIdle(self._ctx)
+    return msg
+
+  def on_hold(self) -> str:
+    return '?'
