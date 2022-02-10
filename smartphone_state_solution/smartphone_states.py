@@ -51,8 +51,7 @@ class SmartPhoneIdle(SmartPhoneState):
     return 'No call'
 
   def on_hold(self) -> str:
-    # TBD
-    pass
+    return 'No call'
 
 
 class SmartPhoneRing(SmartPhoneState):
@@ -79,8 +78,8 @@ class SmartPhoneRing(SmartPhoneState):
     return 'Can not end call in RING'
 
   def on_hold(self) -> str:
-    # TBD
-    pass
+    msg = f'Put call {self._ctx.incoming_call_number} on hold'
+    return msg
 
 
 class SmartPhoneInCall(SmartPhoneState):
@@ -113,8 +112,9 @@ class SmartPhoneInCall(SmartPhoneState):
     return msg
 
   def on_hold(self) -> str:
-    # TBD
-    pass
+    msg = f'Put call {self._ctx.in_call_number} on hold and pickup {self._ctx.incoming_call_number}'
+    self._ctx.in_call_number, self._ctx.incoming_call_number = self._ctx.incoming_call_number, self._ctx.in_call_number
+    return msg
 
 
 class SmartPhoneOnHold(SmartPhoneState):
