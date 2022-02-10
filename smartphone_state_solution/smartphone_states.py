@@ -27,6 +27,10 @@ class SmartPhoneState(ABC):
   def on_hold(self) -> str:
     pass
 
+  def __str__(self) -> str:
+    return self.__class__.__name__
+
+
 class SmartPhoneIdle(SmartPhoneState):
   def __init__(self, context):
     super().__init__(context)
