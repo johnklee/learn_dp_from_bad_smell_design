@@ -99,8 +99,8 @@ class SmartPhoneTest(unittest.TestCase):
   @parameterized.expand([
     ('idle', CallState.IDLE, 'No call', CallState.IDLE, None, None),
     ('ring', CallState.RING, f'Put call {TEST_PHONE_NUMBER} on hold', CallState.ONHOLD, None, TEST_PHONE_NUMBER),
-    ('incall', CallState.INCALL, 'Put call {TEST_PHONE_NUMBER} on hold', CallState.ONHOLD, TEST_PHONE_NUMBER, None),
-    ('incall_with_incoming', CallState.INCALL, 'Put call {TEST_PHONE_NUMBER} on hold and pickup 456', CallState.INCALL, TEST_PHONE_NUMBER, '456'),
+    ('incall', CallState.INCALL, f'Put call {TEST_PHONE_NUMBER} on hold', CallState.ONHOLD, TEST_PHONE_NUMBER, None),
+    ('incall_with_incoming', CallState.INCALL, f'Put call {TEST_PHONE_NUMBER} on hold and pickup 456', CallState.INCALL, TEST_PHONE_NUMBER, '456'),
   ])
   def test_onhold(self, state_name, init_state, expected_msg, expected_state, in_call_number, incoming_call_number):
     self.switch_state(init_state)
