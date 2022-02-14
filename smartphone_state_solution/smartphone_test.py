@@ -1,3 +1,4 @@
+from ast import Call
 import enum
 import unittest
 import smartphone
@@ -27,6 +28,8 @@ class SmartPhoneTest(unittest.TestCase):
       self.phone_ctx.state = smartphone_states.SmartPhoneInCall(self.phone_ctx)
     elif state == CallState.RING:
       self.phone_ctx.state = smartphone_states.SmartPhoneRing(self.phone_ctx)
+    elif state == CallState.ONHOLD:
+      self.phone_ctx.state = smartphone_states.SmartPhoneOnHold(self.phone_ctx)
     else:
       raise Exception('Unknown state!')
 
@@ -37,6 +40,8 @@ class SmartPhoneTest(unittest.TestCase):
       self.assertTrue(isinstance(self.phone_ctx.state, smartphone_states.SmartPhoneInCall))
     elif expected_state == CallState.RING:
       self.assertTrue(isinstance(self.phone_ctx.state, smartphone_states.SmartPhoneRing))
+    elif expected_state == CallState.ONHOLD:
+      self.assertTrue(isinstance(self.phone_ctx.state, smartphone_states.SmartPhoneOnHold))
     else:
       raise Exception('Unknown state!')
 
@@ -44,6 +49,7 @@ class SmartPhoneTest(unittest.TestCase):
     ('idle', CallState.IDLE, f'Has call from {TEST_PHONE_NUMBER}', CallState.RING),
     ('ring', CallState.RING, f'Busy with call from {TEST_PHONE_NUMBER}', CallState.RING),
     ('incall', CallState.INCALL, f'Alerting user of incoming call from {TEST_PHONE_NUMBER}', CallState.INCALL),
+    ('onhold', CallState.ONHOLD, f'Alerting user of incoming call from {TEST_PHONE_NUMBER}', CallState.ONHOLD)
   ])
   def test_in_call(self, state_name, init_state, expected_msg, expected_state):
     self.switch_state(init_state)
@@ -57,6 +63,7 @@ class SmartPhoneTest(unittest.TestCase):
     ('ring', CallState.RING, f'Pickup call from {TEST_PHONE_NUMBER}', CallState.INCALL, TEST_PHONE_NUMBER),
     ('incall', CallState.INCALL, f'Switch call to {TEST_PHONE_NUMBER}', CallState.INCALL, TEST_PHONE_NUMBER),
     ('incall_no_incoming', CallState.INCALL, 'No incoming call', CallState.INCALL, None),
+    ('onhold', CallState.ONHOLD, f'Pickup call from {TEST_PHONE_NUMBER}', CallState.INCALL, TEST_PHONE_NUMBER)
   ])
   def test_answer_call(self, state_name, init_state, expected_msg, expected_state, incoming_call_number):
     self.switch_state(init_state)
@@ -71,6 +78,7 @@ class SmartPhoneTest(unittest.TestCase):
     ('ring', CallState.RING, f'Can not end call in RING', CallState.RING, None, TEST_PHONE_NUMBER),
     ('incall', CallState.INCALL, f'End call from {TEST_PHONE_NUMBER}', CallState.IDLE, TEST_PHONE_NUMBER, None),
     ('incall_with_incoming', CallState.INCALL, f'End call from {TEST_PHONE_NUMBER}', CallState.RING, TEST_PHONE_NUMBER, '456'),
+    ('onhold', CallState.ONHOLD, f'End call from {TEST_PHONE_NUMBER}', CallState.IDLE, TEST_PHONE_NUMBER, None)
   ])
   def test_end_call(self, state_name, init_state, expected_msg, expected_state, in_call_number, incoming_call_number):
     self.switch_state(init_state)
@@ -86,6 +94,7 @@ class SmartPhoneTest(unittest.TestCase):
     ('ring', CallState.RING, f'Reject call from {TEST_PHONE_NUMBER}', CallState.IDLE, None, TEST_PHONE_NUMBER),
     ('incall', CallState.INCALL, 'Can not reject call in INCALL', CallState.INCALL, TEST_PHONE_NUMBER, None),
     ('incall_with_incoming', CallState.INCALL, 'Can not reject call in INCALL', CallState.INCALL, TEST_PHONE_NUMBER, '456'),
+    ('onhold', CallState.ONHOLD, 'Can not reject call in INCALL', CallState.ONHOLD, TEST_PHONE_NUMBER, None)
   ])
   def test_reject_call(self, state_name, init_state, expected_msg, expected_state, in_call_number, incoming_call_number):
     self.switch_state(init_state)
@@ -101,6 +110,7 @@ class SmartPhoneTest(unittest.TestCase):
     ('ring', CallState.RING, f'Put call {TEST_PHONE_NUMBER} on hold', CallState.ONHOLD, None, TEST_PHONE_NUMBER),
     ('incall', CallState.INCALL, f'Put call {TEST_PHONE_NUMBER} on hold', CallState.ONHOLD, TEST_PHONE_NUMBER, None),
     ('incall_with_incoming', CallState.INCALL, f'Put call {TEST_PHONE_NUMBER} on hold and pickup 456', CallState.INCALL, TEST_PHONE_NUMBER, '456'),
+    ('onhold', CallState.ONHOLD, f'Put call {TEST_PHONE_NUMBER} unhold', CallState.INCALL, TEST_PHONE_NUMBER, None)
   ])
   def test_onhold(self, state_name, init_state, expected_msg, expected_state, in_call_number, incoming_call_number):
     self.switch_state(init_state)
@@ -109,6 +119,7 @@ class SmartPhoneTest(unittest.TestCase):
     self.assertEqual(
       self.phone_ctx.on_hold(),
       expected_msg)
+
     self.assertState(expected_state)
 
 
