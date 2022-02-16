@@ -23,13 +23,13 @@ class SmartHomeDeviceFacade:
     self.ac_ctr.on(self.prefered_degree)
 
   def is_lamp_on(self) -> None:
-    self.lamp_ctr.is_on()
+    return self.lamp_ctr.is_on()
   
   def is_tv_on(self) -> None:
-    self.tv_ctr.is_on()
+    return self.tv_ctr.is_on()
   
-  def is_ac_on(self) -> None:
-    self.ac_ctr.is_on()
+  def is_ac_on(self) -> bool:
+    return self.ac_ctr.is_on()
 
   def turn_off_lamp(self) -> None:
     self.lamp_ctr.off()
@@ -45,14 +45,14 @@ class SmartHomeDeviceFacade:
     self.ac_ctr.degree = self.degree
   
   def get_ac_degree(self) -> None:
-    self.ac_ctr.get_degree()
+    return self.ac_ctr.get_degree()
   
   def set_tv_channel(self, channel: int) -> None:
     self.channel = channel
     self.tv_ctr.channel_num = self.channel
   
   def get_tv_channel(self) -> None:
-    self.tv_ctr.get_channel()
+    return self.tv_ctr.get_channel()
 
 
   
