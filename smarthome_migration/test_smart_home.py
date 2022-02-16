@@ -13,39 +13,39 @@ class TestSmartHomeAgent(unittest.TestCase):
   def test_enter_home(self):
     self.sha.enter_home()
 
-    self.assertTrue(self.sha.lamp_ctr.is_on())
-    self.assertTrue(self.sha.tv_ctr.is_on())
-    self.assertTrue(self.sha.ac_ctr.is_on())
+    self.assertTrue(self.sha.device_facade.is_lamp_on())
+    self.assertTrue(self.sha.device_facade.is_tv_on())
+    self.assertTrue(self.sha.device_facade.is_ac_on())
 
   def test_enter_bedroom_with_ac_on(self):
-    self.sha.ac_ctr.turn_on()
+    self.sha.device_facade.turn_on_ac()
 
     self.sha.enter_bedroom()
 
-    self.assertFalse(self.sha.lamp_ctr.is_on())
-    self.assertFalse(self.sha.tv_ctr.is_on())
-    self.assertTrue(self.sha.ac_ctr.is_on())
-    self.assertEqual(25, self.sha.ac_ctr.get_degree())
+    self.assertFalse(self.sha.device_facade.is_lamp_on())
+    self.assertFalse(self.sha.device_facade.is_tv_on())
+    self.assertTrue(self.sha.device_facade.is_ac_on())
+    self.assertEqual(25, self.sha.device_facade.get_ac_degree())
 
   def test_enter_living_room_with_tv_on(self):
-    self.sha.tv_ctr.turn_on()
+    self.sha.device_facade.turn_on_tv()
 
     self.sha.enter_living_room()
 
-    self.assertTrue(self.sha.lamp_ctr.is_on())
-    self.assertTrue(self.sha.tv_ctr.is_on())
-    self.assertEqual(66, self.sha.tv_ctr.get_channel())
+    self.assertTrue(self.sha.device_facade.is_lamp_on())
+    self.assertTrue(self.sha.device_facade.is_tv_on())
+    self.assertEqual(66, self.sha.device_facade.get_tv_channel())
 
   def test_exit_home_with_all_on(self):
-    self.sha.ac_ctr.turn_on()
-    self.sha.tv_ctr.turn_on()
-    self.sha.lamp_ctr.turn_on()
+    self.sha.device_facade.turn_on_ac()
+    self.sha.device_facade.turn_on_tv()
+    self.sha.device_facade.turn_on_lamp()
 
     self.sha.exit_home()
 
-    self.assertFalse(self.sha.lamp_ctr.is_on())
-    self.assertFalse(self.sha.tv_ctr.is_on())
-    self.assertFalse(self.sha.ac_ctr.is_on())
+    self.assertFalse(self.sha.device_facade.is_lamp_on())
+    self.assertFalse(self.sha.device_facade.is_tv_on())
+    self.assertFalse(self.sha.device_facade.is_ac_on())
 
 
 if __name__ == '__main__':
