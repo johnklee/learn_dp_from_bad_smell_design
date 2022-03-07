@@ -9,19 +9,19 @@ class Pizza(abc.ABC):
 
   @abc.abstractmethod
   def prepare(self):
-    raise NotImplemented
+    raise NotImplementedError
 
   @abc.abstractmethod
   def bake(self):
-    raise NotImplemented
+    raise NotImplementedError
 
   @abc.abstractmethod
   def cut(self):
-    raise NotImplemented
+    raise NotImplementedError
 
   @abc.abstractmethod
   def box(self):
-    raise NotImplemented
+    raise NotImplementedError
 
 
 class CheezePizza(Pizza):
