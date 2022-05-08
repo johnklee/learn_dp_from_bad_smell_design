@@ -11,9 +11,10 @@ class TestMain(unittest.TestCase):
 
   def test_make_coffee(self):
     expected_steps = '\n'.join([
+        'Grind coffee bean',
         'Boil some water',
         'Brew coffee in boiling water',
-        'Pour coffee in cup',
+        'Pour drink in cup',
         'Add sugar and milk',
     ])
 
@@ -25,7 +26,7 @@ class TestMain(unittest.TestCase):
     expected_steps = '\n'.join([
         'Boil some water',
         'Steep tea in boiling water',
-        'Pour tea in cup',
+        'Pour drink in cup',
         'Add lemon',
     ])
 
