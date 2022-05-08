@@ -1,6 +1,7 @@
 """StarBuzz Beverage recipes."""
 import abc
 
+from typing import List
 
 _STEP_BOIL_WATER = 'Boil some water'
 _STEP_PULL_DRINK = 'Pour drink in cup'
@@ -33,7 +34,7 @@ class CaffeineBeverage(abc.ABC):
   def make(self) -> List[str]:
     action_list = []
     if self.is_coffee():
-      self.grind_coffee_bean()
+      self.grind_coffee_bean(action_list)
 
     self.boil_water(action_list)
     self.make_drink(action_list)
